@@ -1,0 +1,275 @@
+<html>
+<head>
+<style>
+  canvas {
+    border: 1px solid black;
+    margin: auto;
+    display: block;
+    background-color: black; 
+  }
+
+  #start {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    background-color: green;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  #gameover {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: red;
+    display: none; 
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="900" height="500"></canvas>
+<button id="start">Start</button>
+<div id="gameover">Game Over</div> 
+<div id="score">Score: 0</div>
+<script>
+  
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  var box = 20; 
+  var rows = canvas.height / box; 
+  var cols = canvas.width / box; 
+  var snake = [];
+  snake[0] = {
+    x: Math.floor(cols / 2) * box, 
+    y: Math.floor(rows / 2) * box,  
+  };
+
+  var food = {
+    x: Math.floor(Math.random() * cols) * box, 
+    y: Math.floor(Math.random() * rows) * box, 
+  };
+
+  var score = 0;
+  var direction = null;
+  var game;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (var i = 0; i < snake.length; i++) {
+      ctx.fillStyle = i == 0 ? "green" : "white"; 
+      ctx.fillRect(snake[i].x, snake[i].y, box, box); 
+
+      ctx.strokeStyle = "black"; 
+      ctx.strokeRect(snake[i].x, snake[i].y, box, box); 
+    }
+
+    ctx.fillStyle = "red"; 
+    ctx.fillRect(food.x, food.y, box, box); 
+
+
+    var headX = snake[0].x;
+    var headY = snake[0].y;
+
+    if (direction == "left") headX -= box;
+    if (direction == "right") headX += box;
+    if (direction == "up") headY -= box;
+    if (direction == "down") headY += box;
+
+    if (headX == food.x && headY == food.y) {
+      score++; 
+      food = {
+        x: Math.floor(Math.random() * cols) * box, 
+        y: Math.floor(Math.random() * rows) * box, 
+      };
+    } else {
+      snake.pop();
+    }
+
+    var newHead = {
+      x: headX,
+      y: headY,
+    };
+
+    if (
+      headX < 0 ||
+      headX >= canvas.width ||
+      headY < 0 ||
+      headY >= canvas.height ||
+      collision(newHead, snake)
+    ) {
+      
+      clearInterval(game);
+      
+      document.getElementById("gameover").style.display = "block"; 
+      document.getElementById("start").style.display = "block"; 
+    } else {
+      snake.unshift(newHead);
+    }
+
+    ctx.fillStyle = "black"; 
+    ctx.font = "20px Arial"; 
+    ctx.fillText("Score: " + score, box, box); 
+  }
+
+  function collision(object, array) {
+    for (var i = 0; i < array.length; i++) {
+      
+      if (object.x == array[i].x && object.y == array[i].y) {
+        return true; 
+      }
+    }
+    return false; 
+  }
+
+  function keyDown(event) {
+    
+    var key = event.keyCode;
+
+    if (key == 37 && direction != "right") {
+      direction = "left"; 
+
+    } else if (key == 38 && direction != "down") {
+      direction = "up"; 
+
+    } else if (key == 39 && direction != "left") {
+      direction = "right"; 
+
+    } else if (key == 40 && direction != "up") {
+      direction = "down"; 
+    }
+  }
+
+  function startGame() {
+    
+    document.getElementById("start").style.display = "none"; 
+    document.getElementById("gameover").style.display = "none"; 
+    snake = [];
+    snake[0] = {
+      x: Math.floor(cols / 2) * box,
+      y: Math.floor(rows / 2) * box,
+    };
+    food = {
+      x: Math.floor(Math.random() * cols) * box,
+      y: Math.floor(Math.random() * rows) * box,
+    };
+    score = 0;
+    direction = null;
+    game = setInterval(draw, 100);
+  }
+
+  
+  document.addEventListener("keydown", keyDown);
+  document.getElementById("start").addEventListener("click", startGame);
+</script>
+</body>
+</html>
+
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
